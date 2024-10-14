@@ -1,0 +1,30 @@
+figure6_convergence_no_noise.
+ Params:
+Params
+  dimension: Int64 1
+  Nv: Int64 200
+  Np: Int64 4
+  Rvv: Float64 0.6
+  μvv: Float64 0.3
+  Rpv: Float64 0.6
+  μpv: Float64 0.3
+  σv: Float64 0.0
+  σc: Float32 0.3187447f0
+  Rvp: Float64 0.6
+  μvp: Float64 0.5
+  Rpp: Float64 0.6
+  μpp: Float64 0.4
+  σp: Float64 0.0
+  tot_time: Float64 50.0
+  Δt: Float64 0.005
+  tot_steps: Int64 10000
+  plot_step: Int64 5
+  save_step: Int64 1
+  ensembleInitialNoise: Float64 0.02
+  poll_noise_std: Float64 0.04
+  poll_noise_var: Float64 64.0
+  n_members: Int64 100
+  R: Array{Float64}((6, 6)) [64.0 0.0 … 0.0 0.0; 0.0 64.0 … 0.0 0.0; … ; 0.0 0.0 … 64.0 0.0; 0.0 0.0 … 0.0 64.0]
+  inflation_factor: Float64 1.0
+  poll_freq: Int64 10
+  boundary_conditions: String "reflective"

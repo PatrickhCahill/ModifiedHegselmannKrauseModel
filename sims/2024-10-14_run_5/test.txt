@@ -1,0 +1,30 @@
+figure5_divergence.
+ Params:
+Params
+  dimension: Int64 1
+  Nv: Int64 500
+  Np: Int64 4
+  Rvv: Float64 0.05
+  μvv: Float64 0.5
+  Rpv: Float64 0.1
+  μpv: Float64 0.8
+  σv: Float64 0.1
+  σc: Float32 0.2015237f0
+  Rvp: Float64 0.4
+  μvp: Float64 0.02
+  Rpp: Float64 0.05
+  μpp: Float64 0.02
+  σp: Float64 0.002
+  tot_time: Float64 300.0
+  Δt: Float64 0.03
+  tot_steps: Int64 10000
+  plot_step: Int64 10
+  save_step: Int64 1
+  ensembleInitialNoise: Float64 0.02
+  poll_noise_std: Float64 0.04
+  poll_noise_var: Float64 400.0
+  n_members: Int64 100
+  R: Array{Float64}((6, 6)) [400.0 0.0 … 0.0 0.0; 0.0 400.0 … 0.0 0.0; … ; 0.0 0.0 … 400.0 0.0; 0.0 0.0 … 0.0 400.0]
+  inflation_factor: Float64 1.0
+  poll_freq: Int64 10
+  boundary_conditions: String "periodic"
