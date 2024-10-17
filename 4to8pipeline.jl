@@ -54,76 +54,6 @@ using plotting_helpers
     boundary_conditions::String # Defines which boundaryconditions
 end
 
-println("HANDLING Figure 4 and 6a")
-#region Figure 4 and 6a
-the_params = Params(
-    dimension=1, # The dimension of the model | Should be 1 or 2
-    Nv=500, # Number of voters
-    Np=4, # Number of parties
-    Rvv=0.05,# The threshold for a voter consider anothers' opinion
-    μvv=0.5, # The rate at which voters change their minds, called the convergence rate
-    Rpv=0.1, # The threshold for a voter consider anothers' opinion
-    μpv=0.8,#parse(Float64, ARGS[1]), # The rate at which voters change their minds, called the convergence rate
-    σv=0.02, # The standard deviation of the noise added to the voters
-    Rvp=0.4, # The threshold for a voter consider anothers' opinion
-    μvp=0.02, # The rate at which voters change their minds, called the convergence rate
-    Rpp=0.05, # The threshold for a voter consider anothers' opinion
-    μpp=0.02, # The rate at which voters change their minds, calledx the convergence rate
-    σp=0.002, # The standard deviation of the noise added to the voters
-    tot_time=300, # Total time to run the model
-    Δt=0.03, # The time step
-    plot_step=10, # The period between which the plots are produced
-    save_step=1, # How often to save the model
-    ensembleInitialNoise=0.02, # The initial noise of the ensemble
-    poll_noise_std=0.04, # The variance of the noise in the poll
-    n_members=100,
-    inflation_factor=1,
-    poll_freq=10,
-    boundary_conditions="periodic"
-)
-
-foldername = generate_initial_conditions(the_params, (rand(the_params.Nv, 1), reshape([0.2 0.35 0.6 0.78], (:, 1)))) # Generate the initial conditions with random voters and parties and save it to a specific location. We may parse through a specific initial state if we want.
-# foldername = generate_initial_conditions(the_params) # Generate the initial conditions with random voters and parties and save it to a specific location. We may parse through a specific initial state if we want.
-
-(V0, P0) = load_initial_conditions(foldername) # Load the initial conditions from the foldername
-run_and_save(V0, P0, foldername, the_params) # Run the model with the initial conditions
-
-# Read the data from the foldername
-Phistory = load("data/$foldername/results.jld2")["Phistory"]
-Vhistory = load("data/$foldername/results.jld2")["Vhistory"]
-Phistory = hcat(Phistory...)
-Vhistory = hcat(Vhistory...)
-
-p1 = scatter(LinRange(0.01, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step), Vhistory[1:2:end, 1:the_params.plot_step:end]', color="#3188CE", legend=:none, xlabel="t", marker=:circle, alpha=0.9, markerstrokewidth=0, markersize=0.5, ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
-plot!(p1, LinRange(0.01, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step), Phistory[:, 1:the_params.plot_step:end]', color=:red)
-
-orders = Dorder.(eachcol(Vhistory[:, 1:the_params.plot_step:end]), eachcol(Phistory[:, 1:the_params.plot_step:end]))
-orders = hcat(orders...)
-Qwanghere(V) = Qwang(V,the_params)
-Qwang_orders = Qwanghere.(eachcol(Vhistory[:, 1:the_params.plot_step:end]))
-p2 = plot(LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),orders', label=L"\hat{D}", xlabel="t", ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
-plot!(p2, LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),Qwang_orders,label=L"Q_{vv}")
-
-p3 = plot(LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),legend=:none,Qwang_orders,label=L"Q_{vv}", xlabel="t", ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
-
-
-
-if !isdir("sims/$foldername")
-    mkdir("sims/$foldername")
-end
-
-
-savefig(p1, "sims/$(foldername)/convergencenoisy.png")
-savefig(p2, "sims/$(foldername)/convergencenoisy_Dhat.png")
-savefig(p3, "sims/$(foldername)/convergencenoisy_Qvv.png")
-
-
-open("sims/$(foldername)/test.txt", "w") do file
-    write(file, "Figure5_convergence.\n Params:\n")
-    write(file, string(the_params))
-end
-#endregion
-
 println("HANDLING Figure 4 and 6a alternative")
 #region Figure 4 and 6a alternative
 the_params = Params(
@@ -267,8 +197,79 @@ open("sims/$(foldername)/test.txt", "w") do file
 end
 #endregion
 
+println("HANDLING Figure 4 and 6a")
+#region Figure 4 and 6a
+the_params = Params(
+    dimension=1, # The dimension of the model | Should be 1 or 2
+    Nv=500, # Number of voters
+    Np=4, # Number of parties
+    Rvv=0.05,# The threshold for a voter consider anothers' opinion
+    μvv=0.5, # The rate at which voters change their minds, called the convergence rate
+    Rpv=0.1, # The threshold for a voter consider anothers' opinion
+    μpv=0.8,#parse(Float64, ARGS[1]), # The rate at which voters change their minds, called the convergence rate
+    σv=0.02, # The standard deviation of the noise added to the voters
+    Rvp=0.4, # The threshold for a voter consider anothers' opinion
+    μvp=0.02, # The rate at which voters change their minds, called the convergence rate
+    Rpp=0.05, # The threshold for a voter consider anothers' opinion
+    μpp=0.02, # The rate at which voters change their minds, calledx the convergence rate
+    σp=0.002, # The standard deviation of the noise added to the voters
+    tot_time=300, # Total time to run the model
+    Δt=0.03, # The time step
+    plot_step=10, # The period between which the plots are produced
+    save_step=1, # How often to save the model
+    ensembleInitialNoise=0.02, # The initial noise of the ensemble
+    poll_noise_std=0.04, # The variance of the noise in the poll
+    n_members=100,
+    inflation_factor=1,
+    poll_freq=10,
+    boundary_conditions="periodic"
+)
+
+
+foldername = generate_initial_conditions(the_params, (rand(the_params.Nv, 1), reshape([0.2 0.35 0.6 0.78], (:, 1)))) # Generate the initial conditions with random voters and parties and save it to a specific location. We may parse through a specific initial state if we want.
+# foldername = generate_initial_conditions(the_params) # Generate the initial conditions with random voters and parties and save it to a specific location. We may parse through a specific initial state if we want.
+
+(V0, P0) = load_initial_conditions(foldername) # Load the initial conditions from the foldername
+run_and_save(V0, P0, foldername, the_params) # Run the model with the initial conditions
+
+# Read the data from the foldername
+Phistory = load("data/$foldername/results.jld2")["Phistory"]
+Vhistory = load("data/$foldername/results.jld2")["Vhistory"]
+Phistory = hcat(Phistory...)
+Vhistory = hcat(Vhistory...)
+
+p1 = scatter(LinRange(0.01, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step), Vhistory[1:2:end, 1:the_params.plot_step:end]', color="#3188CE", legend=:none, xlabel="t", marker=:circle, alpha=0.9, markerstrokewidth=0, markersize=0.5, ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
+plot!(p1, LinRange(0.01, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step), Phistory[:, 1:the_params.plot_step:end]', color=:red)
+
+orders = Dorder.(eachcol(Vhistory[:, 1:the_params.plot_step:end]), eachcol(Phistory[:, 1:the_params.plot_step:end]))
+orders = hcat(orders...)
+Qwanghere(V) = Qwang(V,the_params)
+Qwang_orders = Qwanghere.(eachcol(Vhistory[:, 1:the_params.plot_step:end]))
+p2 = plot(LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),orders', label=L"\hat{D}", xlabel="t", ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
+plot!(p2, LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),Qwang_orders,label=L"Q_{vv}")
+
+p3 = plot(LinRange(0, the_params.tot_time, the_params.tot_steps ÷ the_params.plot_step),legend=:none,Qwang_orders,label=L"Q_{vv}", xlabel="t", ylim=[0, 1], size=(600, 300), margin=5Plots.mm, dpi=300)
+
+
+
+if !isdir("sims/$foldername")
+    mkdir("sims/$foldername")
+end
+
+
+savefig(p1, "sims/$(foldername)/convergencenoisy.png")
+savefig(p2, "sims/$(foldername)/convergencenoisy_Dhat.png")
+savefig(p3, "sims/$(foldername)/convergencenoisy_Qvv.png")
+
+
+open("sims/$(foldername)/test.txt", "w") do file
+    write(file, "Figure5_convergence.\n Params:\n")
+    write(file, string(the_params))
+end
+#endregion
+
 println("HANDLING Figure 7")
-#region Figure5_DIVERGENCE
+#region Figure 7
 the_params = Params(
     dimension=1, # The dimension of the model | Should be 1 or 2
     Nv=500, # Number of voters
@@ -544,6 +545,3 @@ open("sims/$(foldername)/test.txt", "w") do file
     write(file, string(the_params))
 end
 #endregion
-
-
-

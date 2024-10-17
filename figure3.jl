@@ -10,7 +10,7 @@ using Random
 using LaTeXStrings
 using StatsBase
 
-foldername = "***_run_9" # Replace with foldername corresponding to party base data.
+foldername = "***_run_1" # Replace with foldername corresponding to party base data.
 
 Phistory = load("data/$foldername/results.jld2")["Phistory"]
 Vhistory = load("data/$foldername/results.jld2")["Vhistory"]

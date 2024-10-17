@@ -54,7 +54,7 @@ runset = [
     [0.1,0.1,1,0.03,0.2,  [0.2, 0.53, 0.86]], # Political Base
     [0.1,0.35,1,0.03,0.2, [0.2, 0.53, 0.86]], # Swing voters only
     [0.1,0.1,1,0.01,0.2,  [0.2, 0.53, 0.86]], # Competition by noise reduction for swing voters
-    [0.1,0.1,0,0.03,0.2,  [0.1, 0.23, 0.36]], # Disaffected voters
+    [0.1,0.1,1,0.03,0.2,  [0.4, 0.53, 0.76]], # Disaffected voters
     [0.3,0.1,1,0.03,0.2,  [0.2, 0.53, 0.86]], # Revolution
     [0.1,0.23,1,0.03,0.2,  [0.2, 0.53, 0.86]], # Competition by R_pv 
 
